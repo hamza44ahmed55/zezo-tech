@@ -1,0 +1,17 @@
+{
+  "name": "my-docker-project",
+  "version": "1.0.0",
+  "description": "A sample project to demonstrate Docker with Node.js",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "docker:build": "docker build -t my-docker-project .",
+    "docker:up": "docker-compose up"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {},
+  "author": "Your Name",
+  "license": "MIT"
+}
