@@ -7,5 +7,5 @@
               * a smal tech  *platform                
               * i will do it 
               * ----------------------
- ```                    
+ ```          *           
 - zezo tech 
