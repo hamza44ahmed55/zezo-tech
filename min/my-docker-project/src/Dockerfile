@@ -1,3 +1,4 @@
+# Use the official Node.js image as the base image
 FROM node:14
 
 # Set the working directory
@@ -17,4 +18,4 @@ COPY . .
 EXPOSE 3000
 
 # Command to run the application
-CMD ["node", "src/app.js"]
+CMD ["npm", "start"]
