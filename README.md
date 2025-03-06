@@ -4,8 +4,8 @@
 # *hamza ahmed hamed*
 ```
  -----------------------------------
-              * a smal tech  *platform                
-              * i will do it 
+              * a smal tech  *platform              
+              * i will do it
               * doker file
               * ----------------------
               *
