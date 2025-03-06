@@ -6,6 +6,7 @@
  -----------------------------------
               * a smal tech  *platform                
               * i will do it 
+              * doker file
               * ----------------------
  ```          *           
 - zezo tech 
