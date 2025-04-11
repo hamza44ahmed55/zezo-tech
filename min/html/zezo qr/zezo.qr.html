@@ -6,6 +6,23 @@
     <title>QR Code Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="icon" href="/min/img/zezo - logo - png.png" type="image/png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        .hidden {
+            display: none;
+        }
+        .bg-white {
+            background-color: #ffffff;
+        }
+        .rounded-xl {
+            border-radius: 0.75rem;
+        }
+        </style>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="bg-white p-6 rounded-xl shadow-lg text-center w-96">
@@ -15,7 +32,6 @@
         <div id="qrcode" class="mt-4"></div>
         <button id="downloadBtn" class="hidden mt-4 bg-green-500 text-white px-4 py-2 rounded">Download</button>
     </div>
-
     <script>
         function generateQR() {
             let text = document.getElementById("text").value;
