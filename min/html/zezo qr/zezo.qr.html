@@ -8,49 +8,47 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="icon" href="/min/img/zezo - logo - png.png" type="image/png">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            color: #333;
-        }
-        .hidden {
-            display: none;
-        }
-        .bg-white {
-            background-color: #ffffff;
-        }
-        .rounded-xl {
-            border-radius: 0.75rem;
-        }
-        </style>
+        body { font-family: Arial, sans-serif; background-color: #f0f0f0; color: #333; }
+        .hidden { display: none; }
+    </style>
 </head>
 <body class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="bg-white p-6 rounded-xl shadow-lg text-center w-96">
         <h1 class="text-2xl font-bold mb-4">QR Code Generator</h1>
-        <input type="text" id="text" placeholder="Enter text or URL" class="w-full p-2 border rounded mb-4">
-        <button onclick="generateQR()" class="bg-blue-500 text-white px-4 py-2 rounded">Generate</button>
+        <input type="text" id="text" placeholder="Enter text or URL" class="w-full p-2 border rounded mb-4" oninput="toggleGenerateButton()">
+        <select id="qrSize" class="w-full p-2 border rounded mb-4">
+            <option value="150">Small (150x150)</option>
+            <option value="200" selected>Medium (200x200)</option>
+            <option value="300">Large (300x300)</option>
+        </select>
+        <button id="generateBtn" onclick="generateQR()" class="bg-blue-500 text-white px-4 py-2 rounded hidden">Generate</button>
         <div id="qrcode" class="mt-4"></div>
         <button id="downloadBtn" class="hidden mt-4 bg-green-500 text-white px-4 py-2 rounded">Download</button>
+        <button id="copyBtn" class="hidden mt-2 bg-gray-500 text-white px-4 py-2 rounded">Copy URL</button>
     </div>
+    
     <script>
+        function toggleGenerateButton() {
+            let text = document.getElementById("text").value.trim();
+            let btn = document.getElementById("generateBtn");
+            btn.classList.toggle("hidden", text === "");
+        }
+
         function generateQR() {
-            let text = document.getElementById("text").value;
+            let text = document.getElementById("text").value.trim();
+            let size = document.getElementById("qrSize").value;
             let qrDiv = document.getElementById("qrcode");
             qrDiv.innerHTML = "";
 
-            if (text.trim() === "") {
+            if (text === "") {
                 alert("Please enter text or a URL.");
                 return;
             }
 
-            let qr = new QRCode(qrDiv, {
-                text: text,
-                width: 200,
-                height: 200
-            });
-
+            new QRCode(qrDiv, { text: text, width: size, height: size });
             setTimeout(() => {
                 document.getElementById("downloadBtn").classList.remove("hidden");
+                document.getElementById("copyBtn").classList.remove("hidden");
             }, 500);
         }
 
@@ -60,6 +58,11 @@
             link.href = qrCanvas.toDataURL("image/png");
             link.download = "qrcode.png";
             link.click();
+        });
+
+        document.getElementById("copyBtn").addEventListener("click", function () {
+            let text = document.getElementById("text").value;
+            navigator.clipboard.writeText(text).then(() => alert("Copied to clipboard!"));
         });
     </script>
 </body>
