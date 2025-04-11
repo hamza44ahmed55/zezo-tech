@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Reader</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #333;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        video {
+            width: 100%;             /* جعل الفيديو يأخذ العرض الكامل */
+            height: auto;            /* الحفاظ على نسبة العرض إلى الارتفاع */
+            max-width: 100%;         /* التأكد أن الفيديو لا يتجاوز عرض العنصر */
+            object-fit: cover;       /* جعل الفيديو يغطي المساحة المتاحة بشكل مناسب */
+            border: 2px solid #ddd; /* إضافة حدود حول الفيديو */
+            border-radius: 8px;      /* إضافة تقويس الزوايا */
+            margin-top: 20px;        /* إضافة هامش من الأعلى */
+        }
+
+        input[type="file"] {
+            margin-top: 20px;
+            padding: 8px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #qrResult {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>QR Code Reader</h1>
+
+        <!-- زر تشغيل الكاميرا -->
+        <button onclick="startCamera()">Start Camera</button>
+
+        <!-- الفيديو لعرض الكاميرا -->
+        <video id="camera" autoplay playsinline></video>
+        
+        <!-- رفع صورة QR Code -->
+        <h3>Or Upload QR Code Image</h3>
+        <input type="file" id="qrImage" accept="image/*">
+        
+        <!-- عرض النتيجة -->
+        <p id="qrResult"></p>
+
+        <!-- لوحة Canvas مخفية للتعامل مع الصورة -->
+        <canvas id="captureCanvas"></canvas>
+    </div>
+
+    <!-- مكتبة jsQR لتحليل QR Code -->
+    <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+
+    <script>
+        let video = document.getElementById("camera");
+        let canvas = document.getElementById("captureCanvas");
+        let ctx = canvas.getContext("2d");
+
+        // دالة لبدء تشغيل الكاميرا
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({
+                video: { 
+                    width: { ideal: 640 },       // تقليل الدقة إلى 640px
+                    height: { ideal: 480 },      // تقليل الدقة إلى 480px
+                    frameRate: { ideal: 15 },    // تقليل FPS إلى 15
+                    facingMode: "environment"   // استخدام الكاميرا الخلفية
+                }
+            })
+            .then(stream => {
+                video.srcObject = stream;
+                scanQRCode();  // مسح QR Code مباشرة من الفيديو
+            })
+            .catch(err => alert("Camera access denied. Please enable your camera."));
+        }
+
+        // مسح QR Code من الفيديو
+        function scanQRCode() {
+            setInterval(() => {
+                if (video.videoWidth === 0 || video.videoHeight === 0) {
+                    return; // التأكد أن الفيديو جاهز للعرض
+                }
+
+                // رسم الصورة من الفيديو على الـ canvas
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                // استخراج البيانات من الصورة
+                let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                let qrCode = jsQR(imageData.data, canvas.width, canvas.height);
+
+                if (qrCode) {
+                    document.getElementById("qrResult").innerText = "Scanned: " + qrCode.data;
+                }
+            }, 1000);
+        }
+
+        // مسح QR Code من صورة مرفوعة
+        document.getElementById("qrImage").addEventListener("change", function (event) {
+            let file = event.target.files[0];
+            if (!file) return;
+
+            let reader = new FileReader();
+            reader.onload = function () {
+                let img = new Image();
+                img.src = reader.result;
+                img.onload = function () {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0, img.width, img.height);
+
+                    let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    let qrCode = jsQR(imageData.data, canvas.width, canvas.height);
+
+                    if (qrCode) {
+                        document.getElementById("qrResult").innerText = "Scanned: " + qrCode.data;
+                    } else {
+                        document.getElementById("qrResult").innerText = "No QR code found.";
+                    }
+                };
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="bg-white p-6 rounded-xl shadow-lg text-center w-96">
+        <h1 class="text-2xl font-bold mb-4">QR Code Generator</h1>
+        <input type="text" id="text" placeholder="Enter text or URL" class="w-full p-2 border rounded mb-4">
+        <button onclick="generateQR()" class="bg-blue-500 text-white px-4 py-2 rounded">Generate</button>
+        <div id="qrcode" class="mt-4"></div>
+        <button id="downloadBtn" class="hidden mt-4 bg-green-500 text-white px-4 py-2 rounded">Download</button>
+    </div>
+
+    <script>
+        function generateQR() {
+            let text = document.getElementById("text").value;
+            let qrDiv = document.getElementById("qrcode");
+            qrDiv.innerHTML = "";
+
+            if (text.trim() === "") {
+                alert("Please enter text or a URL.");
+                return;
+            }
+
+            let qr = new QRCode(qrDiv, {
+                text: text,
+                width: 200,
+                height: 200
+            });
+
+            setTimeout(() => {
+                document.getElementById("downloadBtn").classList.remove("hidden");
+            }, 500);
+        }
+
+        document.getElementById("downloadBtn").addEventListener("click", function () {
+            let qrCanvas = document.querySelector("#qrcode canvas");
+            let link = document.createElement("a");
+            link.href = qrCanvas.toDataURL("image/png");
+            link.download = "qrcode.png";
+            link.click();
+        });
+    </script>
+</body>
+</html>
