@@ -99,6 +99,81 @@ const posts = [
         title: "Sustainable Living",
         content: "I'm trying to live more sustainably. Here are some tips.",
         image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Personal Development",
+        content: "I'm on a journey of personal development. Here are some resources I love.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Home Decor Ideas",
+        content: "I love decorating my home! Here are some ideas.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Fitness Challenges",
+        content: "I've been participating in fitness challenges. Here's my experience.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Traveling on a Budget",
+        content: "Here are some tips for traveling without breaking the bank.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Learning a New Language",
+        content: "I'm learning Spanish! Here are some resources that help me.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Home Workout Routines",
+        content: "I love working out at home. Here are some routines I follow.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Weekend Road Trip",
+        content: "I went on a road trip this weekend. It was so much fun!",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Creative Writing",
+        content: "I enjoy creative writing. Here are some of my pieces.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Exploring Nature",
+        content: "Nature is beautiful! Here are some photos from my hikes.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Tech Innovations",
+        content: "Technology is evolving rapidly. Here are some innovations I'm excited about.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Volunteering Experiences",
+        content: "I love giving back to the community. Here are my volunteering experiences.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Favorite Podcasts",
+        content: "I enjoy listening to podcasts. Here are some of my favorites.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Home Office Setup",
+        content: "I recently set up a home office. Here are some tips for creating a productive space.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Weekend Crafting",
+        content: "I love crafting on the weekends. Here are some projects I've worked on.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
+    },
+    {
+        title: "Exploring New Hobbies",
+        content: "I'm always looking to try new hobbies. Here are some I've enjoyed recently.",
+        image: "/min/img/zezo - logo - png.png"  // Image file
     }
 ];
 
