@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomodoro Timer with Music</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .hidden { display: none; }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+  <div id="pomodoro-container" class="bg-white p-8 rounded-lg shadow-lg">
+    <h1 class="text-3xl font-semibold text-center mb-6">Pomodoro Timer with Music</h1>
+    <div id="timer" class="text-4xl font-bold text-center mb-4">25:00</div>
+    <div class="flex justify-between">
+      <button id="start" class="bg-blue-500 text-white py-2 px-4 rounded">Start</button>
+      <button id="reset" class="bg-gray-500 text-white py-2 px-4 rounded hidden">Reset</button>
+      <button id="close" class="bg-red-500 text-white py-2 px-4 rounded">Close</button>
+    </div>
+    <div id="status" class="mt-4 text-center text-xl hidden">Take a Break!</div>
+  </div>
+
+  <!-- Background music (Pomodoro music from the internet) -->
+  <audio id="pomodoroMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-thejazzpiano.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Break music (Break music from the internet) -->
+  <audio id="breakMusic">
+    <source src="https://www.bensound.com/bensound-music/bensound-relaxing.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    let timer;
+    let isPomodoro = true;
+    let minutes = 25;
+    let seconds = 0;
+    let isRunning = false;
+    let pomodoroCount = 0;
+
+    const pomodoroContainer = document.getElementById('pomodoro-container');
+    const timerElement = document.getElementById('timer');
+    const startButton = document.getElementById('start');
+    const resetButton = document.getElementById('reset');
+    const closeButton = document.getElementById('close');
+    const statusElement = document.getElementById('status');
+
+    const pomodoroMusic = document.getElementById('pomodoroMusic');
+    const breakMusic = document.getElementById('breakMusic');
+
+    function updateTimer() {
+      let minuteText = minutes < 10 ? '0' + minutes : minutes;
+      let secondText = seconds < 10 ? '0' + seconds : seconds;
+      timerElement.textContent = `${minuteText}:${secondText}`;
+    }
+
+    function startPomodoro() {
+      if (isRunning) return;
+      isRunning = true;
+      startButton.classList.add('hidden');
+      resetButton.classList.remove('hidden');
+      statusElement.classList.add('hidden');
+
+      // Start playing Pomodoro music
+      pomodoroMusic.play();
+
+      timer = setInterval(function() {
+        if (seconds === 0) {
+          if (minutes === 0) {
+            clearInterval(timer);
+            isRunning = false;
+            pomodoroCount++;
+
+            // Stop Pomodoro music and play break music
+            pomodoroMusic.pause();
+            breakMusic.play();
+
+            if (pomodoroCount % 4 === 0) {
+              statusElement.classList.remove('hidden');
+              statusElement.textContent = 'Time for a Long Break!';
+              minutes = 15; // Long break after 4 Pomodoros
+            } else {
+              statusElement.classList.remove('hidden');
+              statusElement.textContent = 'Take a Break!';
+              minutes = 5; // Short break
+            }
+
+            seconds = 0;
+          } else {
+            minutes--;
+            seconds = 59;
+          }
+        } else {
+          seconds--;
+        }
+        updateTimer();
+      }, 1000);
+    }
+
+    function resetPomodoro() {
+      clearInterval(timer);
+      isRunning = false;
+      startButton.classList.remove('hidden');
+      resetButton.classList.add('hidden');
+      minutes = 25;
+      seconds = 0;
+      pomodoroCount = 0;
+      updateTimer();
+
+      // Stop both music tracks
+      pomodoroMusic.pause();
+      breakMusic.pause();
+      statusElement.classList.add('hidden');
+    }
+
+    function closeTimer() {
+      pomodoroContainer.classList.add('hidden'); // Hide the entire timer container
+
+      // Stop music when closing the timer
+      pomodoroMusic.pause();
+      breakMusic.pause();
+    }
+
+    startButton.addEventListener('click', startPomodoro);
+    resetButton.addEventListener('click', resetPomodoro);
+    closeButton.addEventListener('click', closeTimer);
+    updateTimer();
+  </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Newspaper</title>
+    <style>
+        /* Reset default browser styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* General styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+
+        /* Header styles */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        /* Main content layout */
+        .main-content {
+            display: flex;
+            gap: 20px;
+        }
+
+        .headline {
+            flex: 2;
+        }
+
+        .headline-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .headline-text {
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .articles {
+            flex: 3;
+        }
+
+        .article {
+            margin-bottom: 20px;
+        }
+
+        .article h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .article p {
+            font-size: 1.1rem;
+            color: #444;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            flex: 1;
+            background-color: #fff;
+            padding: 15px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h3 {
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 8px;
+        }
+
+        /* Footer styles */
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        /* Responsive design */
+        @media screen and (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Daily News</h1>
+        <p>Your daily dose of news and information</p>
+    </header>
+
+    <div class="main-content">
+        <section class="headline">
+            <h2 class="headline-title">Breaking News: Major Event Happens</h2>
+            <p class="headline-text">This is a brief description of the major event happening right now...</p>
+        </section>
+
+        <section class="articles">
+            <article class="article">
+                <h3>Article 1 Title</h3>
+                <p>This is the content of the first article. It could be any relevant news story...</p>
+            </article>
+            <article class="article">
+                <h3>Article 2 Title</h3>
+                <p>This is the content of the second article. More detailed information...</p>
+            </article>
+        </section>
+
+        <aside class="sidebar">
+            <h3>Trending Topics</h3>
+            <ul>
+                <li>Topic 1</li>
+                <li>Topic 2</li>
+                <li>Topic 3</li>
+            </ul>
+        </aside>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Daily News. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Example of changing headline dynamically
+        document.querySelector('.headline-title').addEventListener('click', function() {
+            this.innerText = 'New Major Event: Update on Breaking News';
+        });
+
+        // Example of a simple dynamic update for articles
+        document.querySelectorAll('.article').forEach((article, index) => {
+            article.addEventListener('click', function() {
+                this.querySelector('p').innerText = `This is the updated content for Article ${index + 1}. More information will be added here soon.`;
+            });
+        });
+    </script>
+</body>
+</html>
