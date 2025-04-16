@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .greeting {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4a4a4a;
+        }
+        .todo-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        #todo-form {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        #todo-input {
+            flex-grow: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 0 4px 4px 0;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 12px 8px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="greeting">Hi there! 👋</div>
+    <div class="todo-container">
+        <h1>My To-Do List</h1>
+        <form id="todo-form">
+            <input type="text" id="todo-input" placeholder="Add a new task..." required>
+            <button type="submit">Add</button>
+        </form>
+        <ul id="todo-list"></ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('todo-form');
+            const input = document.getElementById('todo-input');
+            const todoList = document.getElementById('todo-list');
+            
+            // Load existing todos from local storage
+            let todos = JSON.parse(localStorage.getItem('todos')) || [];
+            
+            // Render existing todos
+            renderTodos();
+            
+            // Add new todo
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const todoText = input.value.trim();
+                if (todoText) {
+                    todos.push({
+                        text: todoText,
+                        completed: false,
+                        id: Date.now()
+                    });
+                    
+                    // Save to local storage
+                    localStorage.setItem('todos', JSON.stringify(todos));
+                    
+                    // Render updated list
+                    renderTodos();
+                    
+                    // Clear input
+                    input.value = '';
+                }
+            });
+            
+            // Event delegation for todo list actions
+            todoList.addEventListener('click', function(e) {
+                const target = e.target;
+                
+                // Delete todo
+                if (target.classList.contains('delete-btn')) {
+                    const todoId = parseInt(target.dataset.id);
+                    todos = todos.filter(todo => todo.id !== todoId);
+                    localStorage.setItem('todos', JSON.stringify(todos));
+                    renderTodos();
+                }
+                
+                // Toggle completed
+                if (target.tagName === 'SPAN' && target.classList.contains('todo-text')) {
+                    const todoId = parseInt(target.dataset.id);
+                    todos = todos.map(todo => {
+                        if (todo.id === todoId) {
+                            todo.completed = !todo.completed;
+                        }
+                        return todo;
+                    });
+                    localStorage.setItem('todos', JSON.stringify(todos));
+                    renderTodos();
+                }
+            });
+            
+            // Render todos function
+            function renderTodos() {
+                todoList.innerHTML = '';
+                
+                if (todos.length === 0) {
+                    const emptyMessage = document.createElement('p');
+                    emptyMessage.textContent = 'No tasks yet. Add one above!';
+                    emptyMessage.style.textAlign = 'center';
+                    emptyMessage.style.color = '#888';
+                    todoList.appendChild(emptyMessage);
+                    return;
+                }
+                
+                todos.forEach(todo => {
+                    const li = document.createElement('li');
+                    
+                    const todoText = document.createElement('span');
+                    todoText.textContent = todo.text;
+                    todoText.classList.add('todo-text');
+                    todoText.dataset.id = todo.id;
+                    todoText.style.cursor = 'pointer';
+                    if (todo.completed) {
+                        todoText.classList.add('completed');
+                    }
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = 'Delete';
+                    deleteBtn.classList.add('delete-btn');
+                    deleteBtn.dataset.id = todo.id;
+                    
+                    li.appendChild(todoText);
+                    li.appendChild(deleteBtn);
+                    todoList.appendChild(li);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
